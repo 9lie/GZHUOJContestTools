@@ -1,4 +1,4 @@
-import getpass, requests, random
+import getpass, requests, random, json
 
 header = {
     'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36'
@@ -12,6 +12,7 @@ changeInfo_url = main_url + 'changeInfo'
 changePvl_url = main_url + 'changePvl'
 regContestAdd_url = main_url + 'regContestAdd'
 toggleStar_url = main_url + 'toggleStar'
+getStatus_url = main_url + 'getStatus'
 
 def doLogin(username, password):
     '''
@@ -127,15 +128,14 @@ def changePvl(name, pvl, realname, sex, college, grade):
         ['70', '71', '72', '73', '81', '82']
     其他和上面一样
     '''
-    data = {
+    requests.post(changePvl_url, headers=header, data={
         'name': name,
         'pvl': pvl,
         'realname': realname,
         'sex': sex,
         'college': college,
         'grade': grade
-    }
-    response = requests.post(changePvl_url, headers=header, data=data)
+    })
 
 
 def regContestAdd(cid, name):
@@ -159,6 +159,39 @@ def toggleStar(cid, name, type):
         'name': name,
         'type': str(type)
     })
+
+
+def getStatus(cid, page, name, pid, result):
+    '''
+    获取比赛的榜
+    cid 比赛的id
+    page 第几页
+    name 指定用户名
+    pid 指定题目id
+    reslut = 2 ac
+
+    返回值有两个
+    第一个是一个list，每个元素是一个dict，包括：
+        runID 提交的id
+        userName 用户名
+        problemID 题目id
+        result 
+        time 运行时间 ms
+        memory 运行内存 KB
+        language 使用语言
+        length 代码长度 B
+        inDate 提交时间戳
+    第二个返回值是一共有多少页提交
+    '''
+    response = requests.post(getStatus_url, headers=header, data={
+        'cid': str(cid),
+        'page': str(page),
+        'name': name,
+        'pid': str(pid),
+        'result': str(result)
+    });
+    ret = json.loads(response.text)
+    return ret[0], ret[1]
 
 
 if __name__ == '__main__':
