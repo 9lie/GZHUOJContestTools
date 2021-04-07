@@ -90,7 +90,7 @@ def makePassword(length):
     '''
     str = '23456789abdefghijmnqrtyABDEFGHJLMNQRTY'
     # 密码的字符集要避免相似的字符，也尽量避免大小写差不多的字符
-    return random.sample('str' * length, length)
+    return random.sample(str * length, length)
 
 
 def reg(name, realname, sex, college, gde):
@@ -102,7 +102,7 @@ def reg(name, realname, sex, college, gde):
     sex 0 男 1 女
     college
     gde 年级 + 班 例如 181
-    collegeList = ['其他', '计机', '数院', '土木', '物电', '机电', '华软', '腾讯', '网易', '阿里', 'YY']
+    collegeList = ['其他', '计机', '数院', '土木', '物电', '机电', '华软', '腾讯', '网易', '阿里', 'YY']，参数为下标
 
     并且非常难受的一件事是只有这里注册可以更改帐号的学号，并且其他地方暂时找不到可以更改学号的地方
     更难受的是学号直接等于帐号名称，也就是说要么帐号直接用学号注册，要么学号那一栏会显示用户名???
